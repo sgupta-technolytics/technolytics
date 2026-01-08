@@ -1,123 +1,230 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const MenuWrapper = ({ name, label, children }) => (
+    <div
+      className="relative"
+      onMouseEnter={() => setActiveMenu(name)}
+      onMouseLeave={() => setActiveMenu(null)}
+    >
+      <button className="hover:text-cyan-400 transition">
+        {label}
+      </button>
+
+      {activeMenu === name && (
+        <div className="absolute left-1/2 -translate-x-1/2 top-full pt-6">
+          {children}
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black border-b border-white/10">
+    <header className="fixed top-0 left-0 w-full z-50 bg-black/85 backdrop-blur-xl border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 
-        {/* LOGO */}
-        <div className="text-white font-bold text-xl tracking-wide">
+        {/* BRAND */}
+        <Link
+          href="/"
+          className="text-white text-xl font-semibold tracking-[0.22em] hover:text-cyan-400 transition"
+        >
           TECHNOLYTICS
-        </div>
+        </Link>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden md:flex items-center gap-10 text-sm font-medium text-white/80">
+        {/* ================= DESKTOP NAV ================= */}
+        <nav className="hidden md:flex items-center gap-14 text-sm font-medium text-white/75">
 
           {/* SOLUTIONS */}
-          <div
-            className="relative"
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
-          >
-            <button className="flex items-center gap-1 hover:text-cyan-400 transition">
-              SOLUTIONS
-              <span className="text-cyan-400">▾</span>
-            </button>
+          <MenuWrapper name="solutions" label="SOLUTIONS">
+            <MegaMenu
+              title="Engineering Intelligent Solutions"
+              subtitle="AI platforms powering autonomous supply chains."
+              sections={[
+                {
+                  title: "Platforms",
+                  links: [
+                    ["SCAI", "/platforms/scai"],
+                    ["Integrated Planning", "/platforms/ibp"],
+                    ["Digital Twin", "/platforms/digital-twin"],
+                  ],
+                },
+                {
+                  title: "Products",
+                  links: [
+                    ["Demand AI", "/products/demand-ai"],
+                    ["Supply AI", "/products/supply-ai"],
+                    ["Production AI", "/products/production-ai"],
+                  ],
+                },
+                {
+                  title: "Services",
+                  links: [
+                    ["Control Tower", "/services/control-tower"],
+                    ["Advanced Analytics", "/services/analytics"],
+                    ["4PL", "/services/4pl"],
+                  ],
+                },
+              ]}
+            />
+          </MenuWrapper>
 
-            {/* MEGA MENU */}
-            {open && (
-              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-6 w-[1000px] bg-[#060b14] border border-cyan-500/15 rounded-xl shadow-2xl p-10">
-                <div className="grid grid-cols-4 gap-10">
+          {/* RESOURCES */}
+          <MenuWrapper name="resources" label="RESOURCES">
+            <MegaMenu
+              title="Insights That Drive Decisions"
+              subtitle="Thought leadership, research, and industry learnings."
+              sections={[
+                {
+                  title: "Explore",
+                  links: [
+                    ["Blog & Insights", "/resources/blog"],
+                    ["Case Studies", "/resources/case-studies"],
+                    ["Whitepapers", "/resources/whitepapers"],
+                  ],
+                },
+              ]}
+              narrow
+            />
+          </MenuWrapper>
 
-                  {/* LEFT INTRO */}
-                  <div>
-                    <h3 className="text-2xl font-semibold text-white leading-snug">
-                      Creating<br />Sustainable<br />Value
-                    </h3>
-                  </div>
-
-                  {/* PLATFORMS */}
-                  <div>
-                    <h4 className="text-white mb-3 font-semibold">Platforms</h4>
-                    <ul className="space-y-2 text-white/70">
-                      <li className="text-cyan-400 font-medium">SCAI</li>
-                      <li>Integrated Business Planning</li>
-                      <li>Risk Management & Digital Twin</li>
-                      <li>Enterprise Data Management</li>
-
-                      <li className="pt-3 text-cyan-400 font-medium">iTMS</li>
-                      <li>Shipment Lifecycle Management</li>
-                      <li>Execution Orchestration</li>
-                      <li>Track & Trace</li>
-                      <li>Logistics Analytics</li>
-                    </ul>
-                  </div>
-
-                  {/* PRODUCTS */}
-                  <div>
-                    <h4 className="text-white mb-3 font-semibold">Products</h4>
-                    <ul className="space-y-2 text-white/70">
-                      <li className="text-cyan-400 font-medium">
-                        Planning Products
-                      </li>
-                      <li>Demand AI</li>
-                      <li>Replenishment AI</li>
-                      <li>Production AI</li>
-                      <li>Supply AI</li>
-
-                      <li className="pt-3 text-cyan-400 font-medium">
-                        Execution Products
-                      </li>
-                      <li>Order AI</li>
-                      <li>Dispatch AI</li>
-                      <li>Orchestration AI</li>
-                      <li>Track AI</li>
-                    </ul>
-                  </div>
-
-                  {/* SERVICES */}
-                  <div>
-                    <h4 className="text-white mb-3 font-semibold">Services</h4>
-                    <ul className="space-y-2 text-white/70">
-                      <li>Control Tower</li>
-                      <li>4PL</li>
-                      <li>Advanced Analytics</li>
-                    </ul>
-                  </div>
-
-                </div>
-              </div>
-            )}
-          </div>
-
-          <button className="hover:text-cyan-400 transition">
-            RESOURCES
-          </button>
-
-          <button className="hover:text-cyan-400 transition">
-            COMPANY
-          </button>
+          {/* COMPANY */}
+          <MenuWrapper name="company" label="COMPANY">
+            <MegaMenu
+              title="Building the Future of Intelligence"
+              subtitle="People, purpose, and innovation at Technolytics."
+              sections={[
+                {
+                  title: "Company",
+                  links: [
+                    ["About Us", "/company/about"],
+                    ["Careers", "/company/careers"],
+                    ["Contact", "/company/contact"],
+                  ],
+                },
+              ]}
+              narrow
+            />
+          </MenuWrapper>
         </nav>
 
         {/* CTA */}
         <div className="hidden md:block">
-          <button className="px-6 py-3 rounded-full bg-cyan-500 text-black font-semibold hover:bg-cyan-400 transition shadow-[0_0_25px_rgba(0,200,255,0.5)]">
+          <Link
+            href="/get-demo"
+            className="px-7 py-3 rounded-full bg-cyan-500 text-black font-semibold
+            hover:bg-cyan-400 transition shadow-[0_0_30px_rgba(0,200,255,0.55)]"
+          >
             REQUEST A DEMO
-          </button>
+          </Link>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
+        {/* MOBILE BUTTON */}
         <button
-          className="md:hidden text-white"
-          onClick={() => setOpen(!open)}
+          className="md:hidden text-white text-2xl"
+          onClick={() => setMobileOpen(!mobileOpen)}
         >
           ☰
         </button>
       </div>
+
+      {/* ================= MOBILE MENU ================= */}
+      {mobileOpen && (
+        <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-white/10 px-6 py-6 space-y-6">
+
+          {[
+            {
+              title: "Solutions",
+              links: [
+                ["SCAI", "/platforms/scai"],
+                ["Demand AI", "/products/demand-ai"],
+                ["Control Tower", "/services/control-tower"],
+              ],
+            },
+            {
+              title: "Resources",
+              links: [
+                ["Blog", "/resources/blog"],
+                ["Case Studies", "/resources/case-studies"],
+              ],
+            },
+            {
+              title: "Company",
+              links: [
+                ["About", "/company/about"],
+                ["Careers", "/company/careers"],
+                ["Contact", "/company/contact"],
+              ],
+            },
+          ].map((section, i) => (
+            <details key={i} className="group">
+              <summary className="cursor-pointer text-white text-lg font-medium">
+                {section.title}
+              </summary>
+              <div className="mt-3 pl-4 space-y-3 border-l border-cyan-500/30">
+                {section.links.map(([label, href]) => (
+                  <Link key={label} href={href} className="block text-white/70">
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </details>
+          ))}
+
+          <Link
+            href="/get-demo"
+            className="block text-center mt-6 py-3 rounded-lg bg-cyan-500 text-black font-semibold"
+          >
+            Request a Demo
+          </Link>
+        </div>
+      )}
     </header>
+  );
+}
+
+/* ================= MEGA MENU COMPONENT ================= */
+
+function MegaMenu({ title, subtitle, sections, narrow }) {
+  return (
+    <div
+      className={`bg-[#060b14]/95 backdrop-blur-xl border border-cyan-500/15
+      rounded-2xl shadow-[0_0_80px_rgba(0,180,255,0.18)]
+      ${narrow ? "w-[520px]" : "w-[900px]"} p-10`}
+    >
+      <div className={`grid ${narrow ? "grid-cols-2" : "grid-cols-4"} gap-10`}>
+
+        <div>
+          <h3 className="text-2xl font-semibold text-white leading-snug">
+            {title}
+          </h3>
+          <p className="text-sm text-cyan-300/60 mt-4">
+            {subtitle}
+          </p>
+        </div>
+
+        {sections.map((section, i) => (
+          <div key={i}>
+            <h4 className="text-white mb-4 font-semibold">
+              {section.title}
+            </h4>
+            <ul className="space-y-3 text-white/70">
+              {section.links.map(([label, href]) => (
+                <li key={label}>
+                  <Link href={href} className="hover:text-cyan-400 transition">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

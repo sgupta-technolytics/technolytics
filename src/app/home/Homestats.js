@@ -2,19 +2,14 @@
 
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef, useEffect } from "react";
 
 /* ===========================
-   PARTICLE FACE FORMATION
+   PARTICLE FACE
 =========================== */
 function FaceFormation() {
   const pointsRef = useRef();
   const texture = useLoader(THREE.TextureLoader, "/face.png");
-  const [phase, setPhase] = useState(0); // 0 = chart → 1 = face
-
-  useEffect(() => {
-    setTimeout(() => setPhase(1), 2500);
-  }, []);
 
   const { positions, targets } = useMemo(() => {
     const canvas = document.createElement("canvas");
@@ -33,14 +28,11 @@ function FaceFormation() {
       for (let x = 0; x < size; x += 2) {
         const i = (y * size + x) * 4;
         if (img[i] > 220) {
-          // Spawn from chart-like positions
           pos.push(
             (Math.random() - 0.5) * 40,
-            Math.random() * 25 - 12,
+            (Math.random() - 0.5) * 30,
             (Math.random() - 0.5) * 30
           );
-
-          // Face target
           tgt.push(
             (x - size / 2) * 0.06,
             (size / 2 - y) * 0.06,
@@ -61,14 +53,14 @@ function FaceFormation() {
     const pos = pointsRef.current.geometry.attributes.position.array;
 
     for (let i = 0; i < pos.length; i += 3) {
-      pos[i] += (targets[i] - pos[i]) * (phase ? 0.01 : 0.002);
-      pos[i + 1] += (targets[i + 1] - pos[i + 1]) * (phase ? 0.01 : 0.002);
-      pos[i + 2] += (targets[i + 2] - pos[i + 2]) * 0.01;
+      pos[i] += (targets[i] - pos[i]) * 0.02;
+      pos[i + 1] += (targets[i + 1] - pos[i + 1]) * 0.02;
+      pos[i + 2] += (targets[i + 2] - pos[i + 2]) * 0.02;
 
-      pos[i] += Math.sin(t * 0.6 + i) * 0.003;
+      pos[i] += Math.sin(t * 0.8 + i) * 0.004;
     }
 
-    pointsRef.current.rotation.y = Math.sin(t * 0.15) * 0.2;
+    pointsRef.current.rotation.y = Math.sin(t * 0.25) * 0.25;
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
@@ -98,24 +90,38 @@ function FaceFormation() {
    MAIN SECTION
 =========================== */
 export default function HomeStats() {
+
+  /* 🔥 SAME FIX AS HERO */
+  useEffect(() => {
+    const forceResize = () => {
+      window.dispatchEvent(new Event("resize"));
+    };
+    forceResize();
+    setTimeout(forceResize, 200);
+  }, []);
+
   return (
     <section className="relative w-full min-h-screen bg-black px-6 md:px-24 py-32 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(0,160,255,0.18),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(0,120,255,0.15),transparent_60%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:90px_90px] opacity-10" />
+
+      {/* Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,160,255,0.18),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(0,120,255,0.15),transparent_60%)]" />
 
       <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
-        
-        {/* LEFT — PARTICLES */}
+
+        {/* CANVAS */}
         <div className="w-full md:w-[60%] h-[520px]">
-          <Canvas camera={{ position: [0, 0, 14], fov: 45 }}>
+          <Canvas
+            frameloop="always"
+            dpr={[1, 2]}
+            camera={{ position: [0, 0, 14], fov: 45 }}
+          >
             <ambientLight intensity={2} />
             <FaceFormation />
           </Canvas>
         </div>
 
-        {/* RIGHT — TEXT */}
+        {/* TEXT */}
         <div className="w-full md:w-[40%] text-center md:text-left">
           <h3 className="text-cyan-300 uppercase tracking-widest text-sm mb-4">
             Cognitive Systems
@@ -128,26 +134,8 @@ export default function HomeStats() {
           </h2>
 
           <p className="mt-6 text-lg text-cyan-300 opacity-90 max-w-md">
-            Billions of signals converge, adapt, and assemble — forming intelligent
-            systems inspired by human cognition and powered by advanced AI.
+            Intelligence does not wait for scroll — it forms instantly.
           </p>
-
-          <div className="mt-10 space-y-4">
-            {[
-              "Neural Forecasting",
-              "Adaptive Intelligence",
-              "Autonomous Decisioning",
-              "Human-Centered AI",
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="relative pl-6 text-white tracking-wide border-l border-cyan-400/40"
-              >
-                <span className="absolute left-[-4px] top-2 w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_12px_#00eaff]" />
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
