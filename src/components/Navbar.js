@@ -49,25 +49,25 @@ export default function Navbar() {
                 {
                   title: "Platforms",
                   links: [
-                    ["SCAI", "/platforms/scai"],
-                    ["Integrated Planning", "/platforms/ibp"],
-                    ["Digital Twin", "/platforms/digital-twin"],
+                    ["SCAI", "/services"],
+                    ["Integrated Planning", "/services"],
+                    ["Digital Twin", "/services"],
                   ],
                 },
                 {
                   title: "Products",
                   links: [
-                    ["Demand AI", "/products/demand-ai"],
-                    ["Supply AI", "/products/supply-ai"],
-                    ["Production AI", "/products/production-ai"],
+                    ["Demand AI", "/services"],
+                    ["Supply AI", "/services"],
+                    ["Production AI", "/services"],
                   ],
                 },
                 {
                   title: "Services",
                   links: [
-                    ["Control Tower", "/services/control-tower"],
-                    ["Advanced Analytics", "/services/analytics"],
-                    ["4PL", "/services/4pl"],
+                    ["Control Tower", "/services"],
+                    ["Advanced Analytics", "/services"],
+                    ["4PL", "/services"],
                   ],
                 },
               ]}
@@ -83,9 +83,9 @@ export default function Navbar() {
                 {
                   title: "Explore",
                   links: [
-                    ["Blog & Insights", "/resources/blog"],
-                    ["Case Studies", "/resources/case-studies"],
-                    ["Whitepapers", "/resources/whitepapers"],
+                    ["Blog & Insights", "/services"],
+                    ["Case Studies", "/services"],
+                    ["Whitepapers", "/services"],
                   ],
                 },
               ]}
@@ -102,9 +102,9 @@ export default function Navbar() {
                 {
                   title: "Company",
                   links: [
-                    ["About Us", "/company/about"],
-                    ["Careers", "/company/careers"],
-                    ["Contact", "/company/contact"],
+                    ["About Us", "/services"],
+                    ["Careers", "/services"],
+                    ["Contact", "/services"],
                   ],
                 },
               ]}
@@ -141,24 +141,24 @@ export default function Navbar() {
             {
               title: "Solutions",
               links: [
-                ["SCAI", "/platforms/scai"],
-                ["Demand AI", "/products/demand-ai"],
-                ["Control Tower", "/services/control-tower"],
+                ["SCAI", "/services"],
+                ["Demand AI", "/services"],
+                ["Control Tower", "/services"],
               ],
             },
             {
               title: "Resources",
               links: [
-                ["Blog", "/resources/blog"],
-                ["Case Studies", "/resources/case-studies"],
+                ["Blog", "/services"],
+                ["Case Studies", "/services"],
               ],
             },
             {
               title: "Company",
               links: [
-                ["About", "/company/about"],
-                ["Careers", "/company/careers"],
-                ["Contact", "/company/contact"],
+                ["About", "/services"],
+                ["Careers", "/services"],
+                ["Contact", "/services"],
               ],
             },
           ].map((section, i) => (
@@ -168,7 +168,11 @@ export default function Navbar() {
               </summary>
               <div className="mt-3 pl-4 space-y-3 border-l border-cyan-500/30">
                 {section.links.map(([label, href]) => (
-                  <Link key={label} href={href} className="block text-white/70">
+                  <Link
+                    key={label}
+                    href={href}
+                    className="block text-white/70 hover:text-cyan-400 transition"
+                  >
                     {label}
                   </Link>
                 ))}
@@ -188,7 +192,7 @@ export default function Navbar() {
   );
 }
 
-/* ================= MEGA MENU COMPONENT ================= */
+/* ================= MEGA MENU ================= */
 
 function MegaMenu({ title, subtitle, sections, narrow }) {
   return (
@@ -216,7 +220,10 @@ function MegaMenu({ title, subtitle, sections, narrow }) {
             <ul className="space-y-3 text-white/70">
               {section.links.map(([label, href]) => (
                 <li key={label}>
-                  <Link href={href} className="hover:text-cyan-400 transition">
+                  <Link
+                    href={href}
+                    className="hover:text-cyan-400 transition"
+                  >
                     {label}
                   </Link>
                 </li>
