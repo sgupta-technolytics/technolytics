@@ -37,7 +37,7 @@ export default function Navbar() {
           TECHNOLYTICS
         </Link>
 
-        {/* ================= DESKTOP NAV ================= */}
+        {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-14 text-sm font-medium text-white/75">
 
           {/* SOLUTIONS */}
@@ -103,7 +103,7 @@ export default function Navbar() {
                   title: "Company",
                   links: [
                     ["About Us", "/services"],
-                    ["Careers", "/services"],
+                    ["Careers", "/careers"],   // ✅ stays careers
                     ["Contact", "/services"],
                   ],
                 },
@@ -133,7 +133,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* ================= MOBILE MENU ================= */}
+      {/* MOBILE MENU */}
       {mobileOpen && (
         <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-white/10 px-6 py-6 space-y-6">
 
@@ -149,7 +149,7 @@ export default function Navbar() {
             {
               title: "Resources",
               links: [
-                ["Blog", "/services"],
+                ["Blog", "/src/services"],
                 ["Case Studies", "/services"],
               ],
             },
@@ -157,7 +157,7 @@ export default function Navbar() {
               title: "Company",
               links: [
                 ["About", "/services"],
-                ["Careers", "/services"],
+                ["Careers", "/careers"], // ✅ stays careers
                 ["Contact", "/services"],
               ],
             },
@@ -220,10 +220,7 @@ function MegaMenu({ title, subtitle, sections, narrow }) {
             <ul className="space-y-3 text-white/70">
               {section.links.map(([label, href]) => (
                 <li key={label}>
-                  <Link
-                    href={href}
-                    className="hover:text-cyan-400 transition"
-                  >
+                  <Link href={href} className="hover:text-cyan-400 transition">
                     {label}
                   </Link>
                 </li>
